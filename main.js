@@ -1,18 +1,30 @@
+class Producto {
+    constructor(tipo, cantidad, precioUnitario) {
+        this.tipo = tipo;
+        this.cantidad = cantidad;
+        this.precioUnitario = precioUnitario;
+        this.calcularCostoTotal();
+    }
+
+    calcularCostoTotal() {
+        this.costoTotal = this.cantidad * this.precioUnitario;
+    }
+}
+
+const precioMug = 25000;
+const precioLlavero = 20000;
+const precioCamiseta = 40000;
+
+let productos = [];
+
 function calcularCostoTotal() {
-    // Precios
-    const precioMug = 25000;
-    const precioLlavero = 20000;
-    const precioCamiseta = 40000;
-
-    let costoTotal = 0;
-
-    // Bucle
     while (true) {
         let tipoProducto = prompt("Ingrese el tipo de producto (mug, llavero, camiseta) o escriba 'fin' para terminar:", "");
 
         if (tipoProducto.toLowerCase() === 'fin') {
             break;
         }
+
         if (tipoProducto.toLowerCase() !== 'mug' && tipoProducto.toLowerCase() !== 'llavero' && tipoProducto.toLowerCase() !== 'camiseta') {
             alert("Tipo de producto no válido. Por favor, ingrese 'mug', 'llavero' o 'camiseta'.");
             continue;
@@ -25,26 +37,33 @@ function calcularCostoTotal() {
             continue;
         }
 
-        let costoProducto = 0;
+        let precioUnitario = 0;
+
         switch (tipoProducto.toLowerCase()) {
             case 'mug':
-                costoProducto = cantidad * precioMug;
+                precioUnitario = precioMug;
                 break;
             case 'llavero':
-                costoProducto = cantidad * precioLlavero;
+                precioUnitario = precioLlavero;
                 break;
             case 'camiseta':
-                costoProducto = cantidad * precioCamiseta;
+                precioUnitario = precioCamiseta;
                 break;
             default:
                 alert("Tipo de producto no reconocido. Por favor, ingrese 'mug', 'llavero' o 'camiseta'.");
                 continue;
         }
 
-        costoTotal += costoProducto;
+        // Crear una instancia de la clase Producto y agregarla al array
+        let nuevoProducto = new Producto(tipoProducto, cantidad, precioUnitario);
+        productos.push(nuevoProducto);
+
+        console.log(`Tipo: ${nuevoProducto.tipo}, Cantidad: ${nuevoProducto.cantidad}, Costo Total: ${nuevoProducto.costoTotal}`);
     }
+
+    let costoTotal = productos.reduce((total, producto) => total + producto.costoTotal, 0);
 
     alert(`El costo total de su compra es: ${costoTotal} pesos colombianos`);
 }
 
-calcularCostoTotal();
+document.getElementById('calcularButton').addEventListener('click', calcularCostoTotal);
